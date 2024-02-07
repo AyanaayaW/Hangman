@@ -6,7 +6,7 @@ nltk.download('words')
 english_words = set(nltk.corpus.words.words())
 
 lives = 11
-word = random.choice(list(english_words))
+word = random.choice(list(english_words)).lower()
 guesslist = []
 guessjoin = ''
 
@@ -23,27 +23,30 @@ while running:
     print('')
     guess = str(input("Enter your guess: ")).lower()
 
-    for i in range(len(word)):
-        if guess[0] == word[i]:
-            guesslist[i] = guess[0]
+    if len(guess) == 1:
+        for i in range(len(word)):
+            if guess[0] == word[i]:
+                guesslist[i] = guess[0]
+            else:
+                guesscounter += 1
+
+        if guesscounter == len(word):
+            lives -= 1
+            print(f"Sorry! {guess.upper()} is not there in the word!")
         else:
-            guesscounter += 1
+            print("Correct!")
+        
+        if lives == 0:
+            print(f"You lost the game! The word was {word}")
+            running = False
+            break
+        
+        for i in guesslist:
+            guessjoin += i
 
-    if guesscounter == len(word):
-        lives -= 1
-        print(f"Sorry! {guess.upper()} is not there in the word!")
+        if guessjoin == word:
+            input("You won the game!")
+            running = False
+            break
     else:
-        print("Correct!")
-    
-    if lives == 0:
-        print(f"You lost the game! The word was {word}")
-        running = False
-        break
-    
-    for i in guesslist:
-        guessjoin += i
-
-    if guessjoin == word:
-        input("You won the game!")
-        running = False
-        break
+        print("Please only enter single-letter guesses!")
